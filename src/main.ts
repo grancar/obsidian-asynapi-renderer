@@ -16,7 +16,23 @@ export default class AsyncApiPlugin extends Plugin {
       ...(this.settings.registerYaml ? ['yaml', 'yml'] : []),
       ...(this.settings.registerJson ? ['json'] : []),
     ];
-    if (extensions.length) this.registerExtensions(extensions, ASYNCAPI_VIEW);
+    // registerExtensions throws if another plugin already owns the extension (e.g. openapi-renderer
+    // claims yaml/yml/json). One bad extension must not take the whole plugin down.
+    const taken = extensions.filter((ext) => {
+      try {
+        this.registerExtensions([ext], ASYNCAPI_VIEW);
+        return false;
+      } catch {
+        return true;
+      }
+    });
+    if (taken.length) {
+      new Notice(
+        `AsyncAPI: .${taken.join(' / .')} already opens in another plugin's view. ` +
+          'Use the file context menu or an asyncapi code block instead, or disable that plugin.',
+        10000,
+      );
+    }
 
     this.registerMarkdownCodeBlockProcessor('asyncapi', (source, el, ctx) => {
       ctx.addChild(new AsyncApiBlock(el, this.app, source, ctx.sourcePath));
