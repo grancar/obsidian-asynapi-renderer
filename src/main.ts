@@ -1,7 +1,8 @@
-import { Plugin, type TFile } from 'obsidian';
+import { Notice, Plugin, TFile } from 'obsidian';
 import { AsyncApiSettingTab, DEFAULT_SETTINGS, type Settings } from './settings';
 import { ASYNCAPI_VIEW, AsyncApiView } from './view/AsyncApiView';
 import { AsyncApiBlock } from './codeblock';
+import { SPEC_EXTENSIONS } from './detect';
 
 export default class AsyncApiPlugin extends Plugin {
   settings: Settings = DEFAULT_SETTINGS;
@@ -20,6 +21,25 @@ export default class AsyncApiPlugin extends Plugin {
     this.registerMarkdownCodeBlockProcessor('asyncapi', (source, el, ctx) => {
       ctx.addChild(new AsyncApiBlock(el, this.app, source, ctx.sourcePath));
     });
+
+    this.registerObsidianProtocolHandler('asyncapi-open', async ({ path }) => {
+      const file = path ? this.app.vault.getFileByPath(path) : null;
+      if (!file) {
+        new Notice(`AsyncAPI: file not found: ${path || '(no path given)'}`);
+        return;
+      }
+      await this.openInView(file);
+    });
+
+    this.registerEvent(
+      this.app.workspace.on('file-menu', (menu, file) => {
+        if (!(file instanceof TFile)) return;
+        if (!(SPEC_EXTENSIONS as readonly string[]).includes(file.extension)) return;
+        menu.addItem((item) =>
+          item.setTitle('Open in AsyncAPI view').setIcon('radio-tower').onClick(() => this.openInView(file)),
+        );
+      }),
+    );
 
     this.addCommand({
       id: 'toggle-mode',
