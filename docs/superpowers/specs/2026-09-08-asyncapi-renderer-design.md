@@ -27,7 +27,7 @@ but for [AsyncAPI](https://www.asyncapi.com).
   `@asyncapi/parser`; we ship no React of our own. Its `styles/default.min.css`
   is concatenated into `styles.css` at build time.
 - One wrapper module `src/render.ts` exporting
-  `renderAsyncApi(el: HTMLElement, source: string): Promise<void>` is the only
+  `renderAsyncApi(el: HTMLElement, source: string): void` is the only
   code that touches the bundle. It clears `el`, calls
   `AsyncApiStandalone.render({ schema: source }, el)`, and on throw writes the
   error text into `el`.
@@ -43,7 +43,7 @@ but for [AsyncAPI](https://www.asyncapi.com).
 | `src/main.ts` | Plugin class: settings, view/extension registration, code block processor, commands, ribbon, protocol handler, file menu. |
 | `src/settings.ts` | Settings interface, defaults, settings tab. |
 | `src/render.ts` | Wrapper over the standalone bundle. |
-| `src/detect.ts` | `isAsyncApiSource(text): boolean` (top-level `asyncapi` key, YAML or JSON), `isSpecFile(file)` (extension + content check, cached by mtime). |
+| `src/detect.ts` | Pure text classification, no Obsidian imports: `isAsyncApiSource(text): boolean` (top-level `asyncapi` key, YAML or JSON), `parseBlockBody(body)` for code blocks, `SPEC_EXTENSIONS`. Phase 3 adds `isSpecFile(file)` (extension + content check, cached by mtime). |
 | `src/view/AsyncApiView.ts` | `TextFileView`: Preview/Source toggle, snapshot actions. |
 | `src/view/editor.ts` | Builds the CodeMirror 6 `EditorView`: languages, lint, autocomplete. |
 | `src/codeblock.ts` | ` ```asyncapi ` processor: parse body (inline YAML vs `file:` ref), render, re-render on referenced file change. |
@@ -157,9 +157,10 @@ settings tab says so.
 
 ## Testing
 
-- `vitest` for pure modules: `detect.ts`, code block body parsing,
+- `vitest` for pure modules: `detect.ts` (detection and code block body parsing),
   `snapshots/store.ts` path building and collision handling, `keywords.ts`
-  generation. `obsidian` is aliased to a stub in `vitest.config.ts`.
+  generation. Pure modules import nothing from `obsidian`; when a tested module
+  must (phase 4 store), `obsidian` is aliased to a stub in `vitest.config.ts`.
 - Manual smoke checklist (`docs/smoke-checklist.md`) run against `test-vault/`
   containing a 2.6 and a 3.0 sample spec, using the `obsidian` CLI to reload
   the plugin and take screenshots.
