@@ -1,0 +1,20 @@
+asyncapi: 2.6.0
+info:
+  title: Account Service
+  version: 1.0.0
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: '#/components/messages/UserSignedUp'
+components:
+  messages:
+    UserSignedUp:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+          email:
+            type: string
+            format: email

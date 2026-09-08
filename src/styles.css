@@ -1,0 +1,24 @@
+/* Preview: the AsyncAPI component has no dark mode, so force a light island. */
+.asyncapi-mount {
+  background: #fff;
+  color: #121212;
+  padding: 0 1em;
+  min-height: 100%;
+}
+
+.asyncapi-view-preview {
+  height: 100%;
+  overflow: auto;
+}
+
+.asyncapi-view-source,
+.asyncapi-view-source .cm-editor {
+  height: 100%;
+}
+
+.asyncapi-block-error {
+  color: var(--text-error);
+  border: 1px solid var(--background-modifier-error);
+  border-radius: var(--radius-s);
+  padding: 0.5em 1em;
+}
