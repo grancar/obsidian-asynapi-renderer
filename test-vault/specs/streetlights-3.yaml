@@ -1,0 +1,39 @@
+asyncapi: 3.0.0
+info:
+  title: Streetlights API
+  version: 1.0.0
+  description: Receive lighting measurements and control streetlights.
+servers:
+  production:
+    host: broker.example.com:1883
+    protocol: mqtt
+channels:
+  lightMeasured:
+    address: smartylighting/streetlights/1/0/event/{streetlightId}/lighting/measured
+    messages:
+      lightMeasured:
+        $ref: '#/components/messages/lightMeasured'
+    parameters:
+      streetlightId:
+        description: The ID of the streetlight.
+operations:
+  receiveLightMeasurement:
+    action: receive
+    channel:
+      $ref: '#/channels/lightMeasured'
+    messages:
+      - $ref: '#/channels/lightMeasured/messages/lightMeasured'
+components:
+  messages:
+    lightMeasured:
+      name: lightMeasured
+      title: Light measured
+      payload:
+        type: object
+        properties:
+          lumens:
+            type: integer
+            minimum: 0
+          sentAt:
+            type: string
+            format: date-time
