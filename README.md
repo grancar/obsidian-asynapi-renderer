@@ -50,6 +50,8 @@ Rendering is delegated to the official `@asyncapi/react-component` standalone bu
 ## Releases
 
 Merging to `main` runs `semantic-release`: commit messages decide the bump (`fix:` patch, `feat:` minor,
-`feat!:`/`BREAKING CHANGE:` major), `manifest.json` and `versions.json` are updated and committed back,
-and a GitHub Release tagged `x.y.z` is published with `main.js`, `manifest.json` and `styles.css` attached.
+`feat!:`/`BREAKING CHANGE:` major). During release, `scripts/bump-manifest.mjs` updates `manifest.json`
+and `versions.json` in the CI workspace for that release, then a GitHub Release tagged `x.y.z` is published
+with `main.js`, `manifest.json` and `styles.css` attached.
+Those manifest/version edits are release-artifact only and are not pushed back to `main`.
 Commits without a releasable type (`docs:`, `chore:`, `ci:`) publish nothing.
