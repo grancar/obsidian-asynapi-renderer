@@ -1,3 +1,4 @@
+import './render';
 import { Plugin } from 'obsidian';
 
 export default class AsyncApiPlugin extends Plugin {
