@@ -44,3 +44,10 @@ npm run build    # production build to repo root
 ```
 
 Rendering is delegated to the official `@asyncapi/react-component` standalone bundle, so `main.js` is about 3 MB.
+
+## Releases
+
+Merging to `main` runs `semantic-release`: commit messages decide the bump (`fix:` patch, `feat:` minor,
+`feat!:`/`BREAKING CHANGE:` major), `manifest.json` and `versions.json` are updated and committed back,
+and a GitHub Release tagged `x.y.z` is published with `main.js`, `manifest.json` and `styles.css` attached.
+Commits without a releasable type (`docs:`, `chore:`, `ci:`) publish nothing.
