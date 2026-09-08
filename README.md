@@ -31,6 +31,8 @@ Render [AsyncAPI](https://www.asyncapi.com) specifications (2.x and 3.x) inside 
 ## Settings
 
 - **Open .yaml / .yml files in AsyncAPI view** (default on) and **Open .json files** (default off). Reload the plugin after changing.
+  If another plugin (e.g. OpenAPI Renderer) already owns an extension, that extension is skipped with a notice; the
+  context menu, code blocks and deep links still work. Disable the other plugin if you want AsyncAPI to own the files.
 - **Default mode**: Preview or Source.
 - **Render debounce**: delay before the preview re-renders while typing.
 
