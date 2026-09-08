@@ -1,6 +1,7 @@
 import { Plugin, type TFile } from 'obsidian';
 import { AsyncApiSettingTab, DEFAULT_SETTINGS, type Settings } from './settings';
 import { ASYNCAPI_VIEW, AsyncApiView } from './view/AsyncApiView';
+import { AsyncApiBlock } from './codeblock';
 
 export default class AsyncApiPlugin extends Plugin {
   settings: Settings = DEFAULT_SETTINGS;
@@ -15,6 +16,10 @@ export default class AsyncApiPlugin extends Plugin {
       ...(this.settings.registerJson ? ['json'] : []),
     ];
     if (extensions.length) this.registerExtensions(extensions, ASYNCAPI_VIEW);
+
+    this.registerMarkdownCodeBlockProcessor('asyncapi', (source, el, ctx) => {
+      ctx.addChild(new AsyncApiBlock(el, this.app, source, ctx.sourcePath));
+    });
 
     this.addCommand({
       id: 'toggle-mode',
