@@ -4,6 +4,7 @@ import { builtinModules as builtins } from 'node:module';
 import fs from 'fs';
 import path from 'path';
 import { createRequire } from 'module';
+import { sanitizeVendorCss } from './scripts/sanitize-vendor-css.mjs';
 
 const prod = process.argv[2] === 'production';
 const outDir = prod ? '.' : 'test-vault/.obsidian/plugins/asyncapi-renderer';
@@ -11,9 +12,8 @@ fs.mkdirSync(outDir, { recursive: true });
 
 // styles.css = vendor AsyncAPI CSS (scoped under .aui-root) + our own CSS.
 const require = createRequire(import.meta.url);
-const vendorCss = fs.readFileSync(
-  require.resolve('@asyncapi/react-component/styles/default.min.css'),
-  'utf8',
+const vendorCss = sanitizeVendorCss(
+  fs.readFileSync(require.resolve('@asyncapi/react-component/styles/default.min.css'), 'utf8'),
 );
 const ownCss = fs.readFileSync('src/styles.css', 'utf8');
 fs.writeFileSync(path.join(outDir, 'styles.css'), `${vendorCss}\n${ownCss}`);
