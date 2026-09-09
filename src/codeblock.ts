@@ -13,7 +13,11 @@ export class AsyncApiBlock extends MarkdownRenderChild {
     super(containerEl);
   }
 
-  async onload() {
+  onload() {
+    void this.render();
+  }
+
+  private async render() {
     const parsed = parseBlockBody(this.body);
     if (parsed.kind === 'empty') {
       this.showError('Empty asyncapi block. Paste a spec, or write `file: path/to/spec.yaml`.');

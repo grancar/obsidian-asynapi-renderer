@@ -22,7 +22,6 @@
     "@codemirror/view": "6.38.6",
     "@semantic-release/exec": "^7.1.0",
     "@types/node": "^26.5.0",
-    "builtin-modules": "^5.3.0",
     "esbuild": "^0.28.2",
     "obsidian": "^1.13.1",
     "semantic-release": "^25.0.9",

@@ -2,7 +2,7 @@
   "id": "asyncapi-renderer",
   "name": "AsyncAPI Renderer",
   "version": "0.1.0",
-  "minAppVersion": "1.6.5",
+  "minAppVersion": "1.13.0",
   "description": "Render AsyncAPI specification files (2.x and 3.x) with a source editor.",
   "author": "grancar",
   "isDesktopOnly": true

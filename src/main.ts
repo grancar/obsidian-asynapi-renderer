@@ -52,7 +52,7 @@ export default class AsyncApiPlugin extends Plugin {
         if (!(file instanceof TFile)) return;
         if (!(SPEC_EXTENSIONS as readonly string[]).includes(file.extension)) return;
         menu.addItem((item) =>
-          item.setTitle('Open in AsyncAPI view').setIcon('radio-tower').onClick(() => this.openInView(file)),
+          item.setTitle('Open in AsyncAPI view').setIcon('radio-tower').onClick(() => void this.openInView(file)),
         );
       }),
     );
@@ -72,14 +72,10 @@ export default class AsyncApiPlugin extends Plugin {
   async openInView(file: TFile) {
     const leaf = this.app.workspace.getLeaf('tab');
     await leaf.setViewState({ type: ASYNCAPI_VIEW, state: { file: file.path }, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    await this.app.workspace.revealLeaf(leaf);
   }
 
   async loadSettings() {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-  }
-
-  async saveSettings() {
-    await this.saveData(this.settings);
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, (await this.loadData()) as Partial<Settings> | null);
   }
 }
