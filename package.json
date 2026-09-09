@@ -1,6 +1,6 @@
 {
   "name": "obsidian-asyncapi-renderer",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": true,
   "description": "Render AsyncAPI specifications inside Obsidian",
   "main": "main.js",
