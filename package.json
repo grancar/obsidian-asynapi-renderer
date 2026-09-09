@@ -21,6 +21,7 @@
     "@codemirror/state": "6.5.0",
     "@codemirror/view": "6.38.6",
     "@semantic-release/exec": "^7.1.0",
+    "@semantic-release/git": "^10.0.1",
     "@types/node": "^26.5.0",
     "esbuild": "^0.28.2",
     "obsidian": "^1.13.1",
